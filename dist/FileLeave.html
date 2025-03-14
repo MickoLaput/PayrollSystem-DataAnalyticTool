@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>File Leave - Employee Portal - SB Admin</title>
+
+    <!-- DataTables CSS (Optional, if you're using them) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
+      rel="stylesheet"
+    />
+    <!-- Main CSS -->
+    <link href="css/styles.css" rel="stylesheet" />
+    <!-- FontAwesome -->
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      /* You can keep or adjust these form/container styles as needed */
+      .file-leave-container {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .file-leave-container h2 {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      select,
+      input[type="date"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      textarea {
+        resize: none;
+      }
+      .file-upload {
+        margin-bottom: 20px;
+      }
+      .file-upload input[type="file"] {
+        display: none;
+      }
+      .file-upload label {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .file-upload label:hover {
+        background-color: #0056b3;
+      }
+      .file-name {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+      }
+      button {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #218838;
+      }
+      #responseMessage {
+        margin-top: 15px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body class="sb-nav-fixed">
+    <!-- Top Navigation -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="EmployeePortal.html">Payroll System</a>
+      <!-- Sidebar Toggle-->
+      <button
+        class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Navbar Search-->
+      <form
+        class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
+      >
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Search for..."
+            aria-label="Search for..."
+            aria-describedby="btnNavbarSearch"
+          />
+          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+      <!-- Navbar User Dropdown-->
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbarDropdown"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-user fa-fw"></i>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdown"
+          >
+            <li><a class="dropdown-item" href="EmployeeSettings.html">Settings</a></li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar and Content -->
+    <div id="layoutSidenav">
+      <!-- Sidebar -->
+      <div id="layoutSidenav_nav">
+        <nav
+          class="sb-sidenav accordion sb-sidenav-dark"
+          id="sidenavAccordion"
+        >
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <!-- Core Section -->
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="EmployeePortal.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                Dashboard
+              </a>
+
+              <!-- Leave Section -->
+              <div class="sb-sidenav-menu-heading">Leave</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLeave" aria-expanded="true" aria-controls="collapseLeave">
+                <div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
+                Leave
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse show" id="collapseLeave" aria-labelledby="headingLeave" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="ViewLeaveBalances.html">View Leave Balances</a>
+                  <a class="nav-link active" href="FileLeave.html">File Leave</a>
+                </nav>
+              </div>
+
+              <!-- Payroll Section -->
+              <div class="sb-sidenav-menu-heading">Payroll</div>
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsePayroll"
+                aria-expanded="false"
+                aria-controls="collapsePayroll"
+              >
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-money-bill-wave"></i>
+                </div>
+                Payroll
+                <div class="sb-sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div
+                class="collapse"
+                id="collapsePayroll"
+                aria-labelledby="headingPayroll"
+                data-bs-parent="#sidenavAccordion"
+              >
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="PaySlips.html"
+                    >Payslips</a
+                  >
+                  <a class="nav-link" href="SalaryReport.html"
+                    >Salary Report</a
+                  >
+                </nav>
+              </div>
+
+              <!-- Time Section -->
+              <div class="sb-sidenav-menu-heading">Time</div>
+              <a class="nav-link" href="DailyTimeRecord.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-clock"></i></div>
+                Daily Time Record
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+			<span id="username">Employee</span>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <!-- Page Title & Breadcrumb -->
+            <h1 class="mt-4">File Leave</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item">
+                <a href="EmployeePortal.html">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item active">File Leave</li>
+            </ol>
+
+            <!-- Card for the form -->
+            <div class="card mb-4">
+              <div class="card-header">
+                <i class="fas fa-edit me-1"></i>
+                Submit Your Leave Request
+              </div>
+              <div class="card-body">
+                <form id="leaveForm" method="POST" enctype="multipart/form-data">
+                  <div class="mb-3">
+                    <label for="leaveType" class="form-label">Leave Type:</label>
+                    <select
+                      id="leaveType"
+                      name="leaveType"
+                      class="form-select"
+                      required
+                    >
+                      <option value="Sick Leave">Sick Leave</option>
+                      <option value="Emergency Leave">Emergency Leave</option>
+                      <option value="Vacation Leave">Vacation Leave</option>
+                      <option value="Maternity Leave">Maternity Leave</option>
+                      <option value="Paternity Leave">Paternity Leave</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="leaveStartDate" class="form-label"
+                      >Leave Start Date:</label
+                    >
+                    <input
+                      type="date"
+                      id="leaveStartDate"
+                      name="leaveStartDate"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="leaveEndDate" class="form-label"
+                      >Leave End Date:</label
+                    >
+                    <input
+                      type="date"
+                      id="leaveEndDate"
+                      name="leaveEndDate"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="reason" class="form-label">Reason:</label>
+                    <textarea
+                      id="reason"
+                      name="reason"
+                      rows="4"
+                      class="form-control"
+                      placeholder="Enter the reason for your leave..."
+                      required
+                    ></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label" for="fileAttachment"
+                      >Attach File (optional):</label
+                    >
+                    <input
+                      type="file"
+                      id="fileAttachment"
+                      name="fileAttachment"
+                      class="form-control"
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    <!-- Add a small display area for the chosen file name -->
+                    <div class="file-name mt-1" id="fileName">No file chosen</div>
+                  </div>
+
+                  <button type="submit" class="btn btn-success">
+                    Submit Leave Request
+                  </button>
+                </form>
+                <!-- Response Message -->
+                <div id="responseMessage" class="mt-3"></div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div
+              class="d-flex align-items-center justify-content-between small"
+            >
+              <div class="text-muted">Copyright &copy; Your Website 2023</div>
+              <div>
+                <a href="#">Privacy Policy</a>
+                &middot;
+                <a href="#">Terms &amp; Conditions</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Bootstrap & Core Scripts -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/scripts.js"></script>
+	<script>
+  fetch('php/getName.php')
+    .then(response => response.text())
+    .then(name => {
+      document.getElementById('username').textContent = name;
+    })
+    .catch(error => console.error('Error fetching name:', error));
+</script>
+
+    <script>
+      // Monitor file input for displaying file name
+      function setupFileUpload() {
+        const fileInput = document.getElementById("fileAttachment");
+        const fileNameDisplay = document.getElementById("fileName");
+        if (fileInput && fileNameDisplay) {
+          fileInput.addEventListener("change", function () {
+            const fileName = this.files[0]?.name || "No file chosen";
+            fileNameDisplay.textContent = fileName;
+          });
+        }
+      }
+
+      // Handle leave form submission
+      function setupLeaveForm() {
+        const leaveForm = document.getElementById("leaveForm");
+        if (leaveForm) {
+          leaveForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const formData = new FormData(leaveForm); // Gather form data including the file
+
+            fetch("php/leaveFile.php", {
+              method: "POST",
+              body: formData,
+            })
+              .then((response) => response.text())
+              .then((data) => {
+                const responseMessage =
+                  document.getElementById("responseMessage");
+                responseMessage.textContent = data;
+
+                if (data.includes("success")) {
+                  responseMessage.style.color = "green";
+                  leaveForm.reset();
+                  document.getElementById("fileName").textContent =
+                    "No file chosen";
+                } else {
+                  responseMessage.style.color = "red";
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          });
+        }
+      }
+
+      // Call both functions on DOM load
+      document.addEventListener("DOMContentLoaded", () => {
+        setupFileUpload();
+        setupLeaveForm();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Employee Payslip - SB Admin</title>
+    <!-- Simple-DataTables CSS (if needed) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
+      rel="stylesheet"
+    />
+    <!-- SB Admin core CSS -->
+    <link href="css/styles.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      /* Custom styles for the payslip content */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+      }
+      h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+      .date-filter {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .date-filter input,
+      .date-filter button {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+      .date-filter button {
+        background-color: #4CAF50;
+        color: #fff;
+        cursor: pointer;
+      }
+      .date-filter button:hover {
+        background-color: #45a049;
+      }
+      table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      table th,
+      table td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+      table th {
+        background-color: #f2f2f2;
+      }
+      .form-container {
+        width: 80%;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      .form-container input[type="text"],
+      .form-container input[type="number"],
+      .form-container input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .form-container button {
+        padding: 12px 20px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .form-container button:hover {
+        background-color: #45a049;
+      }
+      .cutoff-selection {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .cutoff-selection label {
+        font-size: 1rem;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body class="sb-nav-fixed">
+    <!-- Top Navigation (from AdminPortal.html) -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="AdminPortal.html">Payroll System</a>
+      <!-- Sidebar Toggle-->
+      <button
+        class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Navbar Search-->
+      <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Search for..."
+            aria-label="Search for..."
+            aria-describedby="btnNavbarSearch"
+          />
+          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+      <!-- Navbar User Dropdown-->
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbarDropdown"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-user fa-fw"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="AdminSettings.html">Settings</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar and Content (same as AdminPortal.html) -->
+    <div id="layoutSidenav">
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <!-- Core Section -->
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="AdminPortal.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                Dashboard
+              </a>
+              
+              <!-- Employee Section -->
+              <div class="sb-sidenav-menu-heading">Employee</div>
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseEmployee"
+                aria-expanded="false"
+                aria-controls="collapseEmployee"
+              >
+                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                Employee
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div
+                class="collapse"
+                id="collapseEmployee"
+                aria-labelledby="headingEmployee"
+                data-bs-parent="#sidenavAccordion"
+              >
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="AdminEmployeeList.html">Employee List</a>
+                </nav>
+              </div>
+              <!-- Payroll Section -->
+              <div class="sb-sidenav-menu-heading">Payroll</div>
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsePayroll"
+                aria-expanded="false"
+                aria-controls="collapsePayroll"
+              >
+                <div class="sb-nav-link-icon"><i class="fas fa-money-bill-wave"></i></div>
+                Payroll
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div
+                class="collapse show"
+                id="collapsePayroll"
+                aria-labelledby="headingPayroll"
+                data-bs-parent="#sidenavAccordion"
+              >
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link active" href="AdminPayslips.html">Payslips</a>
+                  <a class="nav-link" href="AdminSalaryReport.html">Salary Report</a>
+                  <a class="nav-link" href="AdminPdfDistribution.html">PDF Distribution</a>
+                </nav>
+              </div>
+              <!-- Time Section -->
+              <div class="sb-sidenav-menu-heading">Time</div>
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseTime"
+                aria-expanded="false"
+                aria-controls="collapseTime"
+              >
+                <div class="sb-nav-link-icon"><i class="fas fa-clock"></i></div>
+                Time
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div
+                class="collapse"
+                id="collapseTime"
+                aria-labelledby="headingTime"
+                data-bs-parent="#sidenavAccordion"
+              >
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="AdminDailyTimeRecord.html">Daily Time Record</a>
+                  <a class="nav-link" href="AdminViewLeaveBalances.html">View Leave Balances</a>
+                </nav>
+              </div>
+              <!-- Deductions Section -->
+              <div class="sb-sidenav-menu-heading">Deductions</div>
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseDeductions"
+                aria-expanded="false"
+                aria-controls="collapseDeductions"
+              >
+                <div class="sb-nav-link-icon"><i class="fas fa-money-check-alt"></i></div>
+                Deductions
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div
+                class="collapse"
+                id="collapseDeductions"
+                aria-labelledby="headingDeductions"
+                data-bs-parent="#sidenavAccordion"
+              >
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="AdminSSS.html">SSS</a>
+                  <a class="nav-link" href="AdminPhilHealth.html">PhilHealth</a>
+                  <a class="nav-link" href="AdminPagIbig.html">Pag-Ibig</a>
+                </nav>
+              </div>
+              <!-- Addons Section -->
+              <div class="sb-sidenav-menu-heading">Addons</div>
+              <a class="nav-link" href="charts.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                Charts
+              </a>
+              <a class="nav-link" href="tables.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                Tables
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+			<span id="username">Employee</span>
+          </div>
+        </nav>
+      </div>
+      <!-- Main Content Area -->
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <!-- Breadcrumbs -->
+            <h1 class="mt-4">Employee Payslip</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item"><a href="AdminPortal.html">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="AdminPayslips.html">Payslips</a></li>
+              <li class="breadcrumb-item active">Generate Payslip</li>
+            </ol>
+            <!-- Payslip Content Section (from your provided content) -->
+            <div class="employee-portal">
+              <h2>Generate Payslip for Employee</h2>
+              <!-- Display Employee Name -->
+              <div id="employee-name-container">
+                <h3 id="employee-name">Loading employee name...</h3>
+              </div>
+              <h3 id="employee-rate">Loading employee rate...</h3>
+              <h3 id="employee-maxicare">Loading employee maxicare type...</h3>
+              <!-- Cutoff Selection -->
+              <div class="cutoff-selection">
+                <label>
+                  <input type="radio" name="cutoff" value="first" id="first-cutoff" checked> First Cutoff
+                </label>
+                <label>
+                  <input type="radio" name="cutoff" value="second" id="second-cutoff"> Second Cutoff
+                </label>
+              </div>
+              <!-- Date Filter Section -->
+              <div class="date-filter">
+                <input type="date" id="from-date" placeholder="From Date">
+                <input type="date" id="to-date" placeholder="To Date">
+                <button onclick="applyDateFilter()">Apply Filter</button>
+              </div>
+              <!-- Attendance Table Section -->
+              <table id="attendance-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Hours Worked</th>
+                    <th>Overtime Hours</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Attendance data will be populated here via JavaScript -->
+                </tbody>
+              </table>
+              <!-- Payslip Generation Form Section -->
+              <div class="form-container">
+                <h3>Generate Payslip</h3>
+                <label for="pay-date">Pay Date:</label>
+                <input type="date" id="pay-date" required>
+                <label for="gross-pay">Gross Pay:</label>
+                <input type="number" id="gross-pay" step="0.01" placeholder="Enter Gross Pay" required>
+                <!-- Deduction Fields (calculated automatically) -->
+                <label for="sss">SSS:</label>
+                <input type="number" id="sss" step="0.01" placeholder="SSS Deduction" readonly>
+                <label for="pagibig">PagIbig:</label>
+                <input type="number" id="pagibig" step="0.01" placeholder="PagIbig Deduction" readonly>
+                <label for="philhealth">PhilHealth:</label>
+                <input type="number" id="philhealth" step="0.01" placeholder="PhilHealth Deduction" readonly>
+                <label for="tax">Tax:</label>
+                <input type="number" id="tax" step="0.01" placeholder="Tax Deduction" readonly>
+                <label for="maxicare">Maxicare:</label>
+                <input type="number" id="maxicare" step="0.01" placeholder="Maxicare Deduction" readonly>
+                <label for="salary-loan">Salary Loan:</label>
+                <input type="number" id="salary-loan" step="0.01" placeholder="Enter Salary Loan">
+                <label for="overtimehours">Overtime Hours:</label>
+                <input type="number" id="overtimehours" step="0.01" placeholder="Enter Overtime Hours">
+                <label for="overtimepay">Overtime Pay:</label>
+                <input type="number" id="overtimepay" step="0.01" placeholder="Enter Overtime Pay">
+                <label for="net-pay">Net Pay:</label>
+                <input type="number" id="net-pay" step="0.01" placeholder="Net Pay" readonly>
+                <button onclick="generatePayslip()">Generate Payslip</button>
+              </div>
+            </div>
+          </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+              <div class="text-muted">Copyright &copy; Your Website 2023</div>
+              <div>
+                <a href="#">Privacy Policy</a>
+                &middot;
+                <a href="#">Terms &amp; Conditions</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!-- Bootstrap & Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <!-- Chart.js & DataTables Scripts (Optional) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="assets/demo/chart-area-demo.js"></script>
+    <script src="assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="js/datatables-simple-demo.js"></script>
+	<script>
+  fetch('php/getName.php')
+    .then(response => response.text())
+    .then(name => {
+      document.getElementById('username').textContent = name;
+    })
+    .catch(error => console.error('Error fetching name:', error));
+</script>
+	
+    <!-- Custom Scripts for Payslip Functions -->
+    <script>
+	
+	
+
+      function initializePage() {
+        setupEventListeners();
+        fetchEmployeePayslipDetails();
+      }
+
+      function setupEventListeners() {
+        const grossPayField = document.getElementById('gross-pay');
+        const overtimePayField = document.getElementById('overtimepay');
+        const overtimeHoursField = document.getElementById('overtimehours');
+        const salaryLoanField = document.getElementById('salary-loan');
+        if (grossPayField && overtimePayField && overtimeHoursField && salaryLoanField) {
+          grossPayField.addEventListener('input', calculateDeductions);
+          overtimePayField.addEventListener('input', calculateDeductions);
+          overtimeHoursField.addEventListener('input', calculateDeductions);
+          salaryLoanField.addEventListener('input', calculateDeductions);
+        }
+      }
+
+      // Updated deduction function calculates and updates deduction fields
+      function calculateDeductions() {
+        const grossPay = parseFloat(document.getElementById('gross-pay').value) || 0;
+        const overtimePay = parseFloat(document.getElementById('overtimepay').value) || 0;
+        const salaryLoan = parseFloat(document.getElementById('salary-loan').value) || 0;
+        const maxicare = parseFloat(document.getElementById('maxicare').value) || 0;
+
+        // Calculate deductions using your provided formulas
+        const sss = calculateSSS();
+        const pagibig = calculatePagIbig();
+        const philhealth = calculatePhilHealth(grossPay);
+        const tax = calculateTax(grossPay);
+
+        // Update the deduction fields
+        document.getElementById('sss').value = sss.toFixed(2);
+        document.getElementById('pagibig').value = pagibig.toFixed(2);
+        document.getElementById('philhealth').value = philhealth.toFixed(2);
+        document.getElementById('tax').value = tax.toFixed(2);
+
+        // Calculate net pay using the updated deductions
+        const netPay = grossPay + overtimePay - (sss + pagibig + philhealth + tax + salaryLoan + maxicare);
+        document.getElementById('net-pay').value = netPay.toFixed(2);
+      }
+		
+	   let totalHours = 0; // Global variable to store total hours
+	   
+      function applyDateFilter() {
+        const fromDate = document.getElementById('from-date').value;
+        const toDate = document.getElementById('to-date').value;
+        const employeeId = sessionStorage.getItem('employeeId');
+
+        fetch(`php/getAttendanceForPayslip.php?employeeId=${employeeId}&fromDate=${fromDate}&toDate=${toDate}`)
+          .then(response => response.json())
+          .then(data => {
+            const tableBody = document.querySelector('#attendance-table tbody');
+            tableBody.innerHTML = '';
+			
+			totalHours = 0; 
+			
+            if (data.length === 0) {
+              tableBody.innerHTML = '<tr><td colspan="4">No attendance records found for the selected dates.</td></tr>';
+            } else {
+              data.forEach(record => {	  
+			  const hoursWorked = parseFloat(record.HoursWorked) || 0;
+				totalHours += hoursWorked;
+			  
+                tableBody.innerHTML += `
+                  <tr>
+                    <td>${record.Date}</td>
+                    <td>${record.Status}</td>
+                    <td>${record.HoursWorked}</td>
+                    <td>${record.OvertimePay}</td>
+                  </tr>
+                `;
+              });
+            }
+          })
+          .catch(error => console.error('Error fetching attendance data:', error));
+      }
+
+      function generatePayslip() {
+        const payDate = document.getElementById('pay-date').value;
+        const grossPay = parseFloat(document.getElementById('gross-pay').value);
+        const salaryLoan = parseFloat(document.getElementById('salary-loan').value) || 0;
+        const overtimePay = parseFloat(document.getElementById('overtimepay').value) || 0;
+        const overtimeHours = parseInt(document.getElementById('overtimehours').value) || 0;
+        const maxicare = parseFloat(document.getElementById('maxicare').value) || 0;
+
+        if (!payDate || isNaN(grossPay)) {
+          alert("Please fill all fields with valid values.");
+          return;
+        }
+
+        // Calculate deductions (this will update the fields via calculateDeductions)
+        const sss = calculateSSS();
+        const pagibig = calculatePagIbig();
+        const philhealth = calculatePhilHealth(grossPay);
+        const tax = calculateTax(grossPay);
+
+        // Calculate net pay
+        const netPay = grossPay + overtimePay - (sss + pagibig + philhealth + tax + salaryLoan + maxicare);
+
+        const payrollData = {
+          employeeId: sessionStorage.getItem('employeeId'),
+          payDate: payDate,
+          grossPay: grossPay,
+          netPay: netPay,
+          sss: sss,
+          pagibig: pagibig,
+          philhealth: philhealth,
+          tax: tax,
+          salaryLoan: salaryLoan,
+          overtimePay: overtimePay,
+          overtimeHours: overtimeHours,
+          maxicare: maxicare,
+		  totalHours: totalHours
+        };
+
+        fetch('php/generatePayslip.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payrollData)
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              alert("Payslip generated successfully!");
+              document.getElementById('pay-date').value = '';
+              document.getElementById('gross-pay').value = '';
+              document.getElementById('overtimepay').value = '';
+              document.getElementById('overtimehours').value = '';
+              document.getElementById('salary-loan').value = '';
+            } else {
+              alert("Failed to generate payslip.");
+            }
+          })
+          .catch(error => console.error('Error generating payslip:', error));
+      }
+
+      function fetchEmployeePayslipDetails() {
+        const employeeId = sessionStorage.getItem('employeeId');
+        const employeeNamePlaceholder = document.getElementById('employee-name');
+        if (!employeeId) {
+          employeeNamePlaceholder.textContent = 'Employee: Unknown';
+          return;
+        }
+        fetch(`php/getEmployeeName.php?employeeId=${employeeId}`)
+          .then(response => response.json())
+          .then(data => {
+            const fullName = `${data.FirstName} ${data.MiddleName || ''} ${data.LastName}`.replace(/\s+/g, ' ').trim();
+            employeeNamePlaceholder.textContent = `Employee: ${fullName}`;
+            document.getElementById('employee-rate').textContent = `Employee Rate: ${data.rate || 'N/A'}`;
+            document.getElementById('employee-maxicare').textContent = `Employee Maxicare Type: ${data.MaxicareType || 'N/A'}`;
+          })
+          .catch(error => {
+            console.error('Error fetching employee name:', error);
+            employeeNamePlaceholder.textContent = 'Employee: Unknown';
+          });
+      }
+
+      // Calculation functions for deductions
+      function calculatePagIbig() {
+  // 1. Get the text content from the #employee-rate element (e.g. "Employee Rate: 1600")
+  const rateText = document.getElementById('employee-rate').textContent || '';
+
+  // 2. Extract just the numeric portion (e.g. "1600") from something like "Employee Rate: 1600"
+  const numericStr = rateText.replace(/[^\d.]/g, ''); // keep digits and decimal
+  const monthlyRate = parseFloat(numericStr) || 0;    // fallback to 0 if not parseable
+
+  // 3. Example bracket data (adjust min_income, max_income, and employee_rate as needed)
+  const pagIbigBrackets = [
+    { min_income: 0.00,     max_income: 1500.00,    employee_rate: 0.01 }, // 1%
+    { min_income: 1500.01,  max_income: 999999.99,  employee_rate: 0.02 }, // 2%
+  ];
+
+  // 4. Determine which bracket the employeeRate falls into
+  for (const bracket of pagIbigBrackets) {
+    if (monthlyRate >= bracket.min_income && monthlyRate <= bracket.max_income) {
+      // Return monthlyRate * bracket’s employee_rate
+      return monthlyRate * bracket.employee_rate;
+    }
+  }
+
+  // 5. Fallback if no bracket is matched
+  return 0;
+}
+
+
+
+      function calculatePhilHealth(grossPay) {
+  const currentYear = new Date().getFullYear();
+
+  const philhealthData = [
+    {
+      coverage_year: 2019,
+      min_monthly_salary: 10000.00,
+      max_monthly_salary: 40000.00,
+      premium_rate: 0.0275,         // 2.75%
+      min_monthly_premium: 275,
+      max_monthly_premium: 1100
+    },
+    {
+      coverage_year: 2020,
+      min_monthly_salary: 10000.00,
+      max_monthly_salary: 40000.00,
+      premium_rate: 0.03,           // 3.00%
+      min_monthly_premium: 300,
+      max_monthly_premium: 1200
+    },
+    {
+      coverage_year: 2021,
+      min_monthly_salary: 10000.00,
+      max_monthly_salary: 40000.00,
+      premium_rate: 0.035,          // Example
+      min_monthly_premium: 350,
+      max_monthly_premium: 1400
+    },
+    {
+      coverage_year: 2022,
+      min_monthly_salary: 10000.00,
+      max_monthly_salary: 80000.00,
+      premium_rate: 0.04,
+      min_monthly_premium: 400,
+      max_monthly_premium: 1600
+    },
+    {
+      coverage_year: 2023,
+      min_monthly_salary: 10000.00,
+      max_monthly_salary: 90000.00,
+      premium_rate: 0.045,
+      min_monthly_premium: 450,
+      max_monthly_premium: 1800
+    },
+    {
+      coverage_year: 2024,
+      min_monthly_salary: 10000.00,
+      max_monthly_salary: 100000.00,
+      premium_rate: 0.05,
+      min_monthly_premium: 500,
+      max_monthly_premium: 2000
+    },
+    {
+      coverage_year: 2025,
+      min_monthly_salary: 10000.00,
+      max_monthly_salary: 100000.00,
+      premium_rate: 0.05,
+      min_monthly_premium: 500,
+      max_monthly_premium: 2000
+    }
+  ];
+
+  const bracket = philhealthData.find(item => item.coverage_year === currentYear);
+  if (!bracket) {
+    // If no matching row for this year, return 0 or some default
+    return 0;
+  }
+
+  const rateText = document.getElementById('employee-rate').textContent || '';
+  const numericStr = rateText.replace(/[^\d.]/g, ''); // keep digits & decimal
+  let monthlyRate = parseFloat(numericStr) || 0;      // fallback to 0 if invalid
+
+  let philhealthDeduction = monthlyRate * bracket.premium_rate;
+
+  return philhealthDeduction;
+}
+
+
+      function calculateSSS() {
+  // Get the current year
+  const currentYear = new Date().getFullYear();
+  
+  // Define the SSS contribution data by year
+  const sssData = [
+    { year: 2019, employee_share: 0.04, min_monthly_salary_credit: 2000, max_monthly_salary_credit: 20000 },
+    { year: 2020, employee_share: 0.045, min_monthly_salary_credit: 3000, max_monthly_salary_credit: 20000 },
+    { year: 2021, employee_share: 0.045, min_monthly_salary_credit: 3000, max_monthly_salary_credit: 25000 },
+    { year: 2022, employee_share: 0.045, min_monthly_salary_credit: 4000, max_monthly_salary_credit: 30000 },
+    { year: 2023, employee_share: 0.045, min_monthly_salary_credit: 4000, max_monthly_salary_credit: 30000 },
+    { year: 2024, employee_share: 0.05, min_monthly_salary_credit: 4000, max_monthly_salary_credit: 35000 },
+    { year: 2025, employee_share: 0.05, min_monthly_salary_credit: 4000, max_monthly_salary_credit: 35000 }
+  ];
+  
+  // Find the bracket for the current year
+  const bracket = sssData.find(item => item.year === currentYear);
+  if (!bracket) {
+    return 0;
+  }
+  
+  // Extract the employee rate from the DOM (e.g. "Employee Rate: 1600")
+  const rateText = document.getElementById('employee-rate').textContent || '';
+  const numericStr = rateText.replace(/[^\d.]/g, ''); // remove non-numeric characters
+  let employeeRate = parseFloat(numericStr) || 0;
+  
+  // Ensure the employee rate is within the allowed range for the bracket
+  if (employeeRate < bracket.min_monthly_salary_credit) {
+    employeeRate = bracket.min_monthly_salary_credit;
+  } else if (employeeRate > bracket.max_monthly_salary_credit) {
+    employeeRate = bracket.max_monthly_salary_credit;
+  }
+  
+  // Calculate the SSS deduction using the employee share factor from the bracket
+  return employeeRate * bracket.employee_share;
+}
+
+
+
+      function calculateTax(grossPay) {
+        if (grossPay <= 10417) {
+          return 0.00;
+        } else if (grossPay <= 16666) {
+          return (grossPay - 10417) * 0.15;
+        } else if (grossPay <= 33332) {
+          return 1250 + (grossPay - 16666) * 0.20;
+        } else if (grossPay <= 83332) {
+          return 5416.67 + (grossPay - 33332) * 0.25;
+        } else if (grossPay <= 333332) {
+          return 20416.67 + (grossPay - 83332) * 0.30;
+        } else {
+          return 100416.67 + (grossPay - 333332) * 0.35;
+        }
+      }
+
+      // Initialize page and setup event listeners
+      function initializePage() {
+        setupEventListeners();
+        fetchEmployeePayslipDetails();
+      }
+
+      function setupEventListeners() {
+        const grossPayField = document.getElementById('gross-pay');
+        const overtimePayField = document.getElementById('overtimepay');
+        const overtimeHoursField = document.getElementById('overtimehours');
+        const salaryLoanField = document.getElementById('salary-loan');
+        if (grossPayField && overtimePayField && overtimeHoursField && salaryLoanField) {
+          grossPayField.addEventListener('input', calculateDeductions);
+          overtimePayField.addEventListener('input', calculateDeductions);
+          overtimeHoursField.addEventListener('input', calculateDeductions);
+          salaryLoanField.addEventListener('input', calculateDeductions);
+        }
+      }
+
+      function calculateDeductions() {
+        const grossPay = parseFloat(document.getElementById('gross-pay').value) || 0;
+        const overtimePay = parseFloat(document.getElementById('overtimepay').value) || 0;
+        const salaryLoan = parseFloat(document.getElementById('salary-loan').value) || 0;
+        const maxicare = parseFloat(document.getElementById('maxicare').value) || 0;
+
+        // Calculate deductions using the defined functions
+        const sss = calculateSSS();
+        const pagibig = calculatePagIbig();
+        const philhealth = calculatePhilHealth(grossPay);
+        const tax = calculateTax(grossPay);
+
+        // Update deduction fields
+        document.getElementById('sss').value = sss.toFixed(2);
+        document.getElementById('pagibig').value = pagibig.toFixed(2);
+        document.getElementById('philhealth').value = philhealth.toFixed(2);
+        document.getElementById('tax').value = tax.toFixed(2);
+
+        // Calculate net pay using updated values
+        const netPay = grossPay + overtimePay - (sss + pagibig + philhealth + tax + salaryLoan + maxicare);
+        document.getElementById('net-pay').value = netPay.toFixed(2);
+      }
+
+      // Call initialization on page load
+      document.addEventListener('DOMContentLoaded', initializePage);
+
+      // Fetch dashboard data (for top cards)
+      function fetchDashboardData() {
+        fetch('php/getTotalEmployees.php')
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('total-employees').textContent = data.total;
+          })
+          .catch(error => console.error('Error fetching total employees:', error));
+
+        fetch('php/getTodayAttendanceStatus.php')
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('late-today').textContent = data.late;
+            document.getElementById('on-time-today').textContent = data.onTime;
+            document.getElementById('absent-today').textContent = data.absent;
+          })
+          .catch(error => console.error('Error fetching attendance status:', error));
+      }
+
+      document.addEventListener('DOMContentLoaded', fetchDashboardData);
+	  
+	  document.addEventListener('DOMContentLoaded', () => {
+  initializePage();
+  fetchDashboardData();
+});
+    </script>
+  </body>
+</html>

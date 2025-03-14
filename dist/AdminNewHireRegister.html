@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Register New Employee - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+      /* Custom styles for the registration form page */
+      .register-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+      }
+      .register-container h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      .register-container label {
+        display: block;
+        margin: 10px 0 5px;
+      }
+      .register-container input,
+      .register-container select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .register-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .register-container button:hover {
+        background-color: #45a049;
+      }
+      .note {
+        font-size: 0.9em;
+        color: #555;
+        margin-top: 15px;
+        text-align: center;
+      }
+      .message {
+        text-align: center;
+        color: green;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body class="sb-nav-fixed">
+    <!-- Top Navigation (same as AdminPortal.html) -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="AdminPortal.html">Payroll System</a>
+      <!-- Sidebar Toggle-->
+      <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Navbar Search-->
+      <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <div class="input-group">
+          <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+      <!-- Navbar User Dropdown -->
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user fa-fw"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="AdminSettings.html">Settings</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar and Main Content -->
+    <div id="layoutSidenav">
+      <!-- Sidebar (copied from AdminPortal.html) -->
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <!-- Core Section -->
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="AdminPortal.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                Dashboard
+              </a>
+              
+              <!-- Employee Section -->
+              <div class="sb-sidenav-menu-heading">Employee</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEmployee" aria-expanded="false" aria-controls="collapseEmployee">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+                Employee
+                <div class="sb-sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div class="collapse" id="collapseEmployee" aria-labelledby="headingEmployee" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="AdminEmployeeList.html">Employee List</a>
+                </nav>
+              </div>
+              <!-- Payroll Section -->
+              <div class="sb-sidenav-menu-heading">Payroll</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePayroll" aria-expanded="false" aria-controls="collapsePayroll">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-money-bill-wave"></i>
+                </div>
+                Payroll
+                <div class="sb-sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div class="collapse" id="collapsePayroll" aria-labelledby="headingPayroll" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="AdminPayslips.html">Payslips</a>
+                  <a class="nav-link" href="AdminSalaryReport.html">Salary Report</a>
+                  <a class="nav-link" href="AdminPdfDistribution.html">PDF Distribution</a>
+                </nav>
+              </div>
+              <!-- Time Section -->
+              <div class="sb-sidenav-menu-heading">Time</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTime" aria-expanded="false" aria-controls="collapseTime">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-clock"></i>
+                </div>
+                Time
+                <div class="sb-sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div class="collapse" id="collapseTime" aria-labelledby="headingTime" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="AdminDailyTimeRecord.html">Daily Time Record</a>
+                  <a class="nav-link" href="AdminViewLeaveBalances.html">View Leave Balances</a>
+                </nav>
+              </div>
+			  
+			  <div class="sb-sidenav-menu-heading">Deductions</div>
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDeductions" aria-expanded="false" aria-controls="collapseDeductions">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-money-check-alt"></i>
+          </div>
+          Deductions
+          <div class="sb-sidenav-collapse-arrow">
+            <i class="fas fa-angle-down"></i>
+          </div>
+        </a>
+        <div class="collapse" id="collapseDeductions" aria-labelledby="headingDeductions" data-bs-parent="#sidenavAccordion">
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="AdminSSS.html">SSS</a>
+            <a class="nav-link" href="AdminPhilHealth.html">PhilHealth</a>
+            <a class="nav-link" href="AdminPagIbig.html">Pag-Ibig</a>
+          </nav>
+        </div>
+			  
+              <!-- Addons Section -->
+              <div class="sb-sidenav-menu-heading">Addons</div>
+              <a class="nav-link" href="charts.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-chart-area"></i>
+                </div>
+                Charts
+              </a>
+              <a class="nav-link" href="tables.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-table"></i>
+                </div>
+                Tables
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+			<span id="username">Employee</span>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">Register New Employee</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item">
+                <a href="AdminPortal.html">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item active">New Hire Registration</li>
+            </ol>
+
+            <!-- Registration Form -->
+            <div class="register-container">
+              <h1>Register New Employee</h1>
+              <form id="register-form" method="POST" enctype="multipart/form-data" onsubmit="registerEmployee(event)">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" name="firstName" required oninput="validateName(this)">
+
+                <label for="middle-name">Middle Name:</label>
+                <input type="text" id="middle-name" name="middleName" oninput="validateName(this)">
+
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" name="lastName" required oninput="validateName(this)">
+
+                <label for="birthdate">Birthdate:</label>
+                <input type="date" id="birthdate" name="birthdate" required>
+
+                <label for="age">Age:</label>
+                <input type="text" id="employee-age" name="age" required oninput="validateAge(this)">
+
+                <label for="status">Status:</label>
+                <select id="status" name="status" required>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Divorced">Divorced</option>
+                  <option value="Widowed">Widowed</option>
+                  <option value="Separated">Separated</option>
+                </select>
+
+                <label for="sex">Sex:</label>
+                <select id="sex" name="sex" required>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" name="phone" oninput="validatePhonev1(this)" placeholder="+63">
+
+                <label for="barangay">Barangay:</label>
+                <input type="text" id="barangay" name="barangay" required>
+
+                <label for="streetnumber">Street Number/Building/House No:</label>
+                <input type="text" id="streetnumber" name="streetnumber" required>
+
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+
+                <label for="postalzipcode">Postal/Zip code:</label>
+                <input type="text" id="postalzipcode" name="postalzipcode" oninput="validatePhone(this)" required>
+
+                <label for="position">Position:</label>
+                <select id="position" name="position" required>
+                  <option value="">Select Position</option>
+                </select>
+
+                <label for="maxicaretype">Maxicare:</label>
+                <select id="maxicaretype" name="maxicaretype" required>
+                  <option value="not_applicable">not_applicable</option>
+                  <option value="silver">silver</option>
+                  <option value="platinum">platinum</option>
+                  <option value="gold">gold</option>
+                  <option value="platinum_plus">platinum_plus</option>
+                </select>
+
+                <label for="salaryloanoption">Avail Salary Loan?:</label>
+                <select id="salaryloanoption" name="salaryloanoption" required>
+                  <option value="No">No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="role">Role:</label>
+                <select id="role" name="role" required>
+                  <option value="Admin">Admin</option>
+                  <option value="Employee">Employee</option>
+                </select>
+                
+                <!-- New Schedule Section -->
+                <label for="timein">Time In:</label>
+                <input type="time" id="timein" name="timein" required>
+                
+                <label for="timeout">Time Out:</label>
+                <input type="time" id="timeout" name="timeout" required>
+                
+                <label for="shift">Shift:</label>
+                <select id="shift" name="shift" required>
+                  <option value="day">Day Shift</option>
+                  <option value="night">Night Shift</option>
+                </select>
+
+                <button type="submit">Register</button>
+              </form>
+              <div class="note">Default leave balance will be set to 15 days.</div>
+              <div class="message" id="message"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+          <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">Copyright &copy; Your Website 2023</div>
+            <div>
+              <a href="#">Privacy Policy</a>
+              &middot;
+              <a href="#">Terms &amp; Conditions</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Bootstrap & Core Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="js/scripts.js"></script>
+  <!-- (Optional) DataTables scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+  <script src="js/datatables-simple-demo.js"></script>
+  <script>
+  fetch('php/getName.php')
+    .then(response => response.text())
+    .then(name => {
+      document.getElementById('username').textContent = name;
+    })
+    .catch(error => console.error('Error fetching name:', error));
+</script>
+  <!-- Inline Script for fetching positions, validations, and register function -->
+  <script>
+    // Fetch positions for the New Hire form
+    function fetchPositions(callback) {
+      fetch('php/getPositions.php')
+        .then(response => response.json())
+        .then(data => {
+          const positionSelect = document.getElementById('position');
+          positionSelect.innerHTML = ''; // Clear existing options
+          data.forEach(position => {
+            const option = document.createElement('option');
+            option.value = position.PositionID;
+            option.textContent = position.PositionName;
+            positionSelect.appendChild(option);
+          });
+          if (callback) callback();
+        })
+        .catch(error => console.error('Error fetching positions:', error));
+    }
+
+    // Validations
+    function validateName(input) {
+      const regex = /^[A-Za-z\s]*$/;
+      if (!regex.test(input.value)) {
+        input.value = input.value.replace(/[^A-Za-z\s]/g, '');
+        showModal('Names can only contain letters and spaces.');
+      }
+    }
+
+    function validatePhone(input) {
+      const regex = /^[0-9]*$/;
+      if (!regex.test(input.value)) {
+        input.value = input.value.replace(/[^0-9]/g, '');
+        showModal('Phone number can only contain numbers.');
+      }
+    }
+
+    function validatePhonev1(input) {
+      if (!input.value.startsWith("+63")) {
+        input.value = "+63" + input.value.replace(/[^0-9]/g, '');
+      }
+      let phoneNumber = input.value.replace("+63", "").replace(/[^0-9]/g, '');
+      if (phoneNumber.length > 10) {
+        phoneNumber = phoneNumber.slice(0, 10);
+      }
+      input.value = "+63" + phoneNumber;
+      if (phoneNumber.length < 10) {
+        showModal('Phone number must have 10 digits after "+63".');
+      }
+    }
+
+    function validateAge(input) {
+      const regex = /^[0-9]*$/;
+      if (!regex.test(input.value)) {
+        input.value = input.value.replace(/[^0-9]/g, '');
+        showModal('Age can only contain numbers.');
+      }
+    }
+
+    function validateSalaryInput(event) {
+      const input = event.target;
+      const regex = /^\d{0,10}(\.\d{0,2})?$/;
+      if (!regex.test(input.value)) {
+        input.value = input.value.slice(0, -1);
+        showModal('Salary must be a number with up to two decimal places.');
+      }
+    }
+
+    // Dummy showModal function (replace with a modal popup if needed)
+    function showModal(message) {
+      alert(message);
+    }
+
+    // Register employee function using fetch
+    function registerEmployee(event) {
+      event.preventDefault(); // Prevent default form submission behavior
+      const form = document.querySelector('#register-form');
+      const formData = new FormData(form);
+
+      // Send data to PHP script
+      fetch('php/registerEmployee.php', {
+          method: 'POST',
+          body: formData
+      })
+          .then(response => response.text())
+          .then(data => {
+              document.getElementById('message').textContent = data;
+              if (data.includes('success')) {
+                  // Clear the form after successful registration
+                  form.reset();
+              }
+          })
+          .catch(error => console.error('Error registering employee:', error));
+    }
+
+    // On page load, fetch positions for the dropdown
+    document.addEventListener('DOMContentLoaded', function () {
+      fetchPositions();
+    });
+  </script>
+</body>
+</html>

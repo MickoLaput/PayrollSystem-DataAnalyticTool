@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Payslips - Employee Portal - SB Admin</title>
+    <!-- Simple DataTables CSS (if needed) -->
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <!-- Main CSS -->
+    <link href="css/styles.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+      /* Container for the payslip cards */
+      .payslip-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        justify-content: center;
+      }
+      /* Improved card styling using Bootstrap classes */
+      .payslip-card {
+        width: 100%;
+        max-width: 350px;
+      }
+      /* Optional: Additional custom styles */
+      .card-header {
+        background-color: #007bff;
+        color: #fff;
+      }
+      .card-body p {
+        margin-bottom: 0.75rem;
+      }
+    </style>
+  </head>
+  <body class="sb-nav-fixed">
+    <!-- Top Navigation (EmployeePortal UI) -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand ps-3" href="EmployeePortal.html">Payroll System</a>
+      <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+        <i class="fas fa-bars"></i>
+      </button>
+      <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <div class="input-group">
+          <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user fa-fw"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="EmployeeSettings.html">Settings</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar and Main Content -->
+    <div id="layoutSidenav">
+      <!-- Sidebar (copied from EmployeePortal.html) -->
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <!-- Core Section -->
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="EmployeePortal.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                Dashboard
+              </a>
+              <!-- Leave Section -->
+              <div class="sb-sidenav-menu-heading">Leave</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLeave" aria-expanded="false" aria-controls="collapseLeave">
+                <div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
+                Leave
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="collapseLeave" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="ViewLeaveBalances.html">View Leave Balances</a>
+                  <a class="nav-link" href="FileLeave.html">File Leave</a>
+                </nav>
+              </div>
+              <!-- Payroll Section -->
+              <div class="sb-sidenav-menu-heading">Payroll</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePayroll" aria-expanded="true" aria-controls="collapsePayroll">
+                <div class="sb-nav-link-icon"><i class="fas fa-money-bill-wave"></i></div>
+                Payroll
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse"  id="collapsePayroll" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link active" href="PaySlips.html">Payslips</a>
+                  <a class="nav-link" href="SalaryReport.html">Salary Report</a>
+                </nav>
+              </div>
+              <!-- Time Section -->
+              <div class="sb-sidenav-menu-heading">Time</div>
+              <a class="nav-link" href="DailyTimeRecord.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-clock"></i></div>
+                Daily Time Record
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            <span id="username">Employee</span>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content Area -->
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">My Payslips</h1>
+            <!-- Filter Container -->
+            <div class="filter-container">
+              <label for="monthFilter">Month:</label>
+              <select id="monthFilter">
+                <option value="">All</option>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+              <label for="yearFilter">Year:</label>
+              <select id="yearFilter">
+                <option value="">All</option>
+                <!-- Recent years will be populated via JavaScript -->
+              </select>
+              <button class="btn btn-primary" onclick="applyPayslipFilter()">Filter</button>
+            </div>
+            <!-- Payslip Cards Container -->
+            <div id="payslipContainer" class="payslip-container">
+              <!-- Payslip cards will be dynamically inserted here -->
+            </div>
+          </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+              <div class="text-muted">Copyright &copy; Your Website 2023</div>
+              <div>
+                <a href="#">Privacy Policy</a> &middot;
+                <a href="#">Terms &amp; Conditions</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Bootstrap & Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script>
+      // Update sidebar footer with logged-in user's name
+      fetch('php/getName.php')
+        .then(response => response.text())
+        .then(name => {
+          document.getElementById('username').textContent = name;
+        })
+        .catch(error => console.error('Error fetching name:', error));
+    </script>
+    <!-- Populate Year Filter -->
+    <script>
+      function populateYearFilter() {
+        const yearSelect = document.getElementById('yearFilter');
+        const monthSelect = document.getElementById('monthFilter');
+        const currentYear = new Date().getFullYear();
+        const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
+        for (let year = currentYear; year >= currentYear - 5; year--) {
+          const option = document.createElement('option');
+          option.value = year;
+          option.textContent = year;
+          yearSelect.appendChild(option);
+        }
+        monthSelect.value = currentMonth;
+        yearSelect.value = currentYear;
+      }
+      populateYearFilter();
+    </script>
+    <!-- Payslip Functions -->
+    <script>
+      function applyPayslipFilter() {
+        const month = document.getElementById('monthFilter').value;
+        const year = document.getElementById('yearFilter').value;
+        fetchPayslips(month, year);
+      }
+      function fetchPayslips(month = '', year = '') {
+        const url = `php/getPayslips.php?month=${month}&year=${year}`;
+        fetch(url)
+          .then(response => response.json())
+          .then(data => displayPayslips(data))
+          .catch(error => console.error('Error fetching payslips:', error));
+      }
+      function displayPayslips(payslips) {
+        const payslipContainer = document.getElementById('payslipContainer');
+        payslipContainer.innerHTML = '';
+        if (!payslips || payslips.length === 0) {
+          payslipContainer.innerHTML = '<p>No payslips found.</p>';
+          return;
+        }
+        payslips.forEach(payslip => {
+          const card = document.createElement('div');
+          card.className = 'payslip-card';
+          card.innerHTML = `
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5 class="mb-0">Pay Date: ${payslip.PayDate}</h5>
+              </div>
+              <div class="card-body">
+                <p><strong>Employee:</strong> ${payslip.EmployeeName}</p>
+                <p><strong>Department:</strong> ${payslip.Department || 'N/A'}</p>
+                <p><strong>Position:</strong> ${payslip.Position || 'N/A'}</p>
+                <p><strong>Total Hours:</strong> ${payslip.TotalHours || 'N/A'}</p>
+                <p><strong>Gross Pay:</strong> ₱${parseFloat(payslip.GrossPay).toFixed(2)}</p>
+                <p><strong>Net Pay:</strong> ₱${parseFloat(payslip.NetPay).toFixed(2)}</p>
+                <p><strong>Social Security:</strong> ₱${parseFloat(payslip.SocialSecuritySystem).toFixed(2)}</p>
+                <p><strong>Pag-IBIG:</strong> ₱${parseFloat(payslip.PagIbig).toFixed(2)}</p>
+                <p><strong>PhilHealth:</strong> ₱${parseFloat(payslip.PhilHealth).toFixed(2)}</p>
+                <p><strong>Salary Loan:</strong> ₱${parseFloat(payslip.SalaryLoan).toFixed(2)}</p>
+                <p><strong>Maxicare:</strong> ₱${parseFloat(payslip.Maxicare || 0).toFixed(2)}</p>
+                <p><strong>Overtime Hours:</strong> ${payslip.OvertimeHours || 'N/A'}</p>
+                <p><strong>Overtime Pay:</strong> ₱${parseFloat(payslip.OvertimePay).toFixed(2)}</p>
+                <p><strong>Tax:</strong> ₱${parseFloat(payslip.Tax || 0).toFixed(2)}</p>
+                <button class="btn btn-primary" onclick="downloadPayslip(${payslip.PayrollID})">Download</button>
+              </div>
+            </div>
+          `;
+          payslipContainer.appendChild(card);
+        });
+      }
+      function downloadPayslip(payrollID) {
+        window.open(`php/downloadPayslip.php?payrollID=${payrollID}`, '_blank');
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        applyPayslipFilter();
+      });
+    </script>
+  </body>
+</html>

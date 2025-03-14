@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>View Leave Balances - Employee Portal - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+      /* Custom styles for tables */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #4CAF50;
+        color: white;
+      }
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+      /* Spacing between sections */
+      section {
+        margin-bottom: 40px;
+      }
+    </style>
+  </head>
+  <body class="sb-nav-fixed">
+    <!-- Top Navigation -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand ps-3" href="EmployeePortal.html">Payroll System</a>
+      <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+        <i class="fas fa-bars"></i>
+      </button>
+      <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <div class="input-group">
+          <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user fa-fw"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="EmployeeSettings.html">Settings</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar and Main Content -->
+    <div id="layoutSidenav">
+      <!-- Sidebar -->
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="EmployeePortal.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                Dashboard
+              </a>
+              <div class="sb-sidenav-menu-heading">Leave</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLeave" aria-expanded="true" aria-controls="collapseLeave">
+                <div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
+                Leave
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse show" id="collapseLeave" aria-labelledby="headingLeave" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link active" href="ViewLeaveBalances.html">View Leave Balances</a>
+                  <a class="nav-link" href="FileLeave.html">File Leave</a>
+                </nav>
+              </div>
+              <div class="sb-sidenav-menu-heading">Payroll</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePayroll" aria-expanded="false" aria-controls="collapsePayroll">
+                <div class="sb-nav-link-icon"><i class="fas fa-money-bill-wave"></i></div>
+                Payroll
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="collapsePayroll" aria-labelledby="headingPayroll" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="PaySlips.html">Payslips</a>
+                  <a class="nav-link" href="SalaryReport.html">Salary Report</a>
+                </nav>
+              </div>
+              <div class="sb-sidenav-menu-heading">Time</div>
+              <a class="nav-link" href="DailyTimeRecord.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-clock"></i></div>
+                Daily Time Record
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+			<span id="username">Employee</span>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">Leave Balances</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item"><a href="EmployeePortal.html">Dashboard</a></li>
+              <li class="breadcrumb-item active">View Leave Balances</li>
+            </ol>
+
+            <!-- Section for Leave Balances -->
+            <section>
+              <h2>Leave Balances</h2>
+              <table id="leave-balances-table">
+                <thead>
+                  <tr>
+                    <th>Leave Type</th>
+                    <th>Days Available</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="2">Loading leave balances...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <!-- Section for Leave Filed -->
+            <section>
+              <h2>Leave Filed</h2>
+              <table id="leave-filed-table">
+                <thead>
+                  <tr>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="5">Loading leave filed data...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+              <div class="text-muted">Copyright &copy; Your Website 2023</div>
+              <div>
+                <a href="#">Privacy Policy</a>
+                &middot;
+                <a href="#">Terms &amp; Conditions</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Bootstrap & Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+	<script>
+  fetch('php/getName.php')
+    .then(response => response.text())
+    .then(name => {
+      document.getElementById('username').textContent = name;
+    })
+    .catch(error => console.error('Error fetching name:', error));
+</script>
+    <script>
+      // Displays leave balances data in the table
+      function displayLeaveBalances(data) {
+        const tbody = document.getElementById('leave-balances-table').querySelector('tbody');
+        tbody.innerHTML = '';
+        if (data.error) {
+          tbody.innerHTML = `<tr><td colspan="2">${data.error}</td></tr>`;
+        } else {
+          data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${item.LeaveType}</td><td>${item.DaysAvailable}</td>`;
+            tbody.appendChild(row);
+          });
+        }
+      }
+
+      // Displays leave filed data in the table
+      function displayLeaveFiled(data) {
+        const tbody = document.getElementById('leave-filed-table').querySelector('tbody');
+        tbody.innerHTML = '';
+        if (data.error) {
+          tbody.innerHTML = `<tr><td colspan="5">${data.error}</td></tr>`;
+        } else {
+          data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${item.LeaveType}</td>
+                             <td>${item.LeaveStartDate}</td>
+                             <td>${item.LeaveEndDate}</td>
+                             <td>${item.indicator}</td>
+                             <td>${item.Reason}</td>`;
+            tbody.appendChild(row);
+          });
+        }
+      }
+
+      // Fetch leave balances from PHP endpoint
+      function fetchLeaveBalancesData() {
+        fetch('php/getLeaveBalances.php')
+          .then(response => response.json())
+          .then(data => {
+            displayLeaveBalances(data);
+          })
+          .catch(error => {
+            console.error('Error fetching leave balances:', error);
+          });
+      }
+
+      // Fetch leave filed from PHP endpoint
+      function fetchLeaveFiledData() {
+        fetch('php/getLeaveFiled.php')
+          .then(response => response.json())
+          .then(data => {
+            displayLeaveFiled(data);
+          })
+          .catch(error => {
+            console.error('Error fetching leave filed data:', error);
+          });
+      }
+
+      // Load data when the page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        fetchLeaveBalancesData();
+        fetchLeaveFiledData();
+      });
+    </script>
+  </body>
+</html>

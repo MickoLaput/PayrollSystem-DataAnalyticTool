@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>SSS Contributions - SB Admin</title>
+
+    <!-- Simple DataTables CSS (optional) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
+      rel="stylesheet"
+    />
+    <!-- SB Admin core CSS -->
+    <link href="css/styles.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="sb-nav-fixed">
+    <!-- Top Navigation -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="AdminPortal.html">Payroll System</a>
+      <!-- Sidebar Toggle-->
+      <button
+        class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Navbar Search-->
+      <form
+        class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
+      >
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Search for..."
+            aria-label="Search for..."
+            aria-describedby="btnNavbarSearch"
+          />
+          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+      <!-- Navbar (User) -->
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbarDropdown"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-user fa-fw"></i>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdown"
+          >
+            <li><a class="dropdown-item" href="AdminSettings.html">Settings</a></li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar and Main Content -->
+    <div id="layoutSidenav">
+      <!-- Sidebar -->
+      <div id="layoutSidenav_nav">
+        <nav
+          class="sb-sidenav accordion sb-sidenav-dark"
+          id="sidenavAccordion"
+        >
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <!-- Core Section -->
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="AdminPortal.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                Dashboard
+              </a>
+             
+              <!-- Employee Section -->
+              <div class="sb-sidenav-menu-heading">Employee</div>
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseEmployee"
+                aria-expanded="false"
+                aria-controls="collapseEmployee"
+              >
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+                Employee
+                <div class="sb-sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div
+                class="collapse"
+                id="collapseEmployee"
+                aria-labelledby="headingEmployee"
+                data-bs-parent="#sidenavAccordion"
+              >
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="AdminEmployeeList.html"
+                    >Employee List</a
+                  >
+                </nav>
+              </div>
+              <!-- Payroll Section -->
+              <div class="sb-sidenav-menu-heading">Payroll</div>
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsePayroll"
+                aria-expanded="false"
+                aria-controls="collapsePayroll"
+              >
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-money-bill-wave"></i>
+                </div>
+                Payroll
+                <div class="sb-sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div
+                class="collapse"
+                id="collapsePayroll"
+                aria-labelledby="headingPayroll"
+                data-bs-parent="#sidenavAccordion"
+              >
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="AdminPayslips.html">Payslips</a>
+                  <a class="nav-link" href="AdminSalaryReport.html"
+                    >Salary Report</a
+                  >
+                  <a class="nav-link" href="AdminPdfDistribution.html"
+                    >PDF Distribution</a
+                  >
+                </nav>
+              </div>
+              <!-- Time Section -->
+              <div class="sb-sidenav-menu-heading">Time</div>
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseTime"
+                aria-expanded="false"
+                aria-controls="collapseTime"
+              >
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-clock"></i>
+                </div>
+                Time
+                <div class="sb-sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div
+                class="collapse"
+                id="collapseTime"
+                aria-labelledby="headingTime"
+                data-bs-parent="#sidenavAccordion"
+              >
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="AdminDailyTimeRecord.html"
+                    >Daily Time Record</a
+                  >
+                  <a class="nav-link" href="AdminViewLeaveBalances.html"
+                    >View Leave Balances</a
+                  >
+                </nav>
+              </div>
+              <!-- Deductions Section -->
+              <div class="sb-sidenav-menu-heading">Deductions</div>
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseDeductions"
+                aria-expanded="true"
+                aria-controls="collapseDeductions"
+              >
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-money-check-alt"></i>
+                </div>
+                Deductions
+                <div class="sb-sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div
+                class="collapse show"
+                id="collapseDeductions"
+                aria-labelledby="headingDeductions"
+                data-bs-parent="#sidenavAccordion"
+              >
+                <nav class="sb-sidenav-menu-nested nav">
+                  <!-- Mark SSS as active -->
+                  <a class="nav-link active" href="AdminSSS.html">SSS</a>
+                  <a class="nav-link" href="AdminPhilHealth.html">PhilHealth</a>
+                  <a class="nav-link" href="AdminPagIbig.html">Pag-Ibig</a>
+                </nav>
+              </div>
+              <!-- Addons Section -->
+              <div class="sb-sidenav-menu-heading">Addons</div>
+              <a class="nav-link" href="charts.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-chart-area"></i>
+                </div>
+                Charts
+              </a>
+              <a class="nav-link" href="tables.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-table"></i>
+                </div>
+                Tables
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+			<span id="username">Employee</span>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">SSS Contributions</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item">
+                <a href="AdminPortal.html">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item active">SSS Contributions</li>
+            </ol>
+
+            <!-- Card for SSS Contribution Rates -->
+            <div class="card mb-4">
+              <div class="card-header">
+                <i class="fas fa-money-check-alt me-1"></i>
+                SSS Contribution Rates
+              </div>
+              <div class="card-body">
+                <!-- Table for SSS data from your DB -->
+                <table class="table table-striped" id="sssRatesTable">
+                  <thead>
+                    <tr>
+                      <th>Year</th>
+                      <th>Total Contribution Rate</th>
+                      <th>Employer Share</th>
+                      <th>Employee Share</th>
+                      <th>Min Monthly Salary Credit</th>
+                      <th>Max Monthly Salary Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sssRatesTableBody">
+                    <tr><td colspan="6">Loading data...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+              <div class="text-muted">Copyright &copy; Your Website 2023</div>
+              <div>
+                <a href="#">Privacy Policy</a>
+                &middot;
+                <a href="#">Terms &amp; Conditions</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Bootstrap & Core Scripts -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/scripts.js"></script>
+
+    <!-- Optional: DataTables script (if needed) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+      crossorigin="anonymous"
+    ></script>
+	
+	<script>
+  fetch('php/getName.php')
+    .then(response => response.text())
+    .then(name => {
+      document.getElementById('username').textContent = name;
+    })
+    .catch(error => console.error('Error fetching name:', error));
+</script>
+
+    <!-- Inline Script to Fetch SSS Data & Possibly Dashboard Data -->
+    <script>
+      function fetchSSSContributionRates() {
+        // Adjust the path to match your actual PHP file
+        fetch('php/getSSSContributionRates.php')
+          .then(response => response.json())
+          .then(data => {
+            const tableBody = document.getElementById('sssRatesTableBody');
+            tableBody.innerHTML = '';
+
+            if (!data || data.length === 0) {
+              tableBody.innerHTML = '<tr><td colspan="6">No data found.</td></tr>';
+              return;
+            }
+
+            data.forEach(row => {
+              // The field names must match your DB columns: year, total_contribution_rate, etc.
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td>${row.year}</td>
+                <td>${row.total_contribution_rate}%</td>
+                <td>${row.employer_share}%</td>
+                <td>${row.employee_share}%</td>
+                <td>${row.min_monthly_salary_credit}</td>
+                <td>${row.max_monthly_salary_credit}</td>
+              `;
+              tableBody.appendChild(tr);
+            });
+          })
+          .catch(error => {
+            console.error('Error fetching SSS contribution rates:', error);
+            document.getElementById('sssRatesTableBody').innerHTML =
+              '<tr><td colspan="6">Error loading data.</td></tr>';
+          });
+      }
+
+      function fetchDashboardData() {
+        // Example: total employees
+        fetch('php/getTotalEmployees.php')
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('total-employees').textContent = data.total;
+          })
+          .catch(error => console.error('Error fetching total employees:', error));
+
+        // Example: today's attendance
+        fetch('php/getTodayAttendanceStatus.php')
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('late-today').textContent = data.late;
+            document.getElementById('on-time-today').textContent = data.onTime;
+            document.getElementById('absent-today').textContent = data.absent;
+          })
+          .catch(error => console.error('Error fetching attendance status:', error));
+      }
+
+      // Load data on page load
+      document.addEventListener('DOMContentLoaded', () => {
+        fetchSSSContributionRates();
+        fetchDashboardData();
+      });
+    </script>
+  </body>
+</html>

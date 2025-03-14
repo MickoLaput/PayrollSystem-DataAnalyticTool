@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Employee Settings - SB Admin</title>
+
+    <!-- Simple DataTables CSS (if used) -->
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <!-- Main SB Admin CSS -->
+    <link href="css/styles.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <style>
+      .section-divider {
+        height: 1px;
+        background-color: #3b4d61;
+        margin: 5px 0;
+        width: 100%;
+      }
+      /* Optional styling for the form */
+      .change-password-form {
+        max-width: 500px;
+        margin: 20px auto;
+      }
+      .change-password-form .form-group {
+        margin-bottom: 15px;
+      }
+      .change-password-form label {
+        font-weight: 600;
+      }
+      .error {
+        color: red;
+        font-size: 0.9em;
+      }
+      .success {
+        color: green;
+        font-size: 1em;
+      }
+      /* Styling for the password input groups */
+      .input-group {
+        display: flex;
+        align-items: center;
+      }
+      .input-group input {
+        flex: 1;
+      }
+      .input-group-text {
+        cursor: pointer;
+        padding: 0.375rem 0.75rem;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-left: 0;
+      }
+    </style>
+  </head>
+
+  <body class="sb-nav-fixed">
+    <!-- Top Navigation -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="EmployeePortal.html">Payroll System</a>
+      <!-- Sidebar Toggle-->
+      <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Navbar Search-->
+      <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <div class="input-group">
+          <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+      <!-- Navbar User Dropdown-->
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user fa-fw"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li>
+              <a class="dropdown-item" href="EmployeeSettings.html">Settings</a>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a class="dropdown-item" href="index.html">Logout</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar and Content -->
+    <div id="layoutSidenav">
+      <!-- Sidebar -->
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <!-- Core Section -->
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="EmployeePortal.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                Dashboard
+              </a>
+
+              <!-- Leave Section -->
+              <div class="sb-sidenav-menu-heading">Leave</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLeave" aria-expanded="false" aria-controls="collapseLeave">
+                <div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
+                Leave
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="collapseLeave" aria-labelledby="headingLeave" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="ViewLeaveBalances.html">View Leave Balances</a>
+                  <a class="nav-link" href="FileLeave.html">File Leave</a>
+                </nav>
+              </div>
+
+              <!-- Payroll Section -->
+              <div class="sb-sidenav-menu-heading">Payroll</div>
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePayroll" aria-expanded="false" aria-controls="collapsePayroll">
+                <div class="sb-nav-link-icon"><i class="fas fa-money-bill-wave"></i></div>
+                Payroll
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="collapsePayroll" aria-labelledby="headingPayroll" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="Payslips.html">Payslips</a>
+                  <a class="nav-link" href="SalaryReport.html">Salary Report</a>
+                </nav>
+              </div>
+
+              <!-- Time Section -->
+              <div class="sb-sidenav-menu-heading">Time</div>
+              <a class="nav-link" href="DailyTimeRecord.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-clock"></i></div>
+                Daily Time Record
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+			<span id="username">Employee</span>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">Employee Settings</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item">
+                <a href="EmployeePortal.html">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item active">Settings</li>
+            </ol>
+
+            <!-- Settings Section -->
+            <div class="card mb-4">
+              <div class="card-header">
+                <i class="fas fa-user-cog me-1"></i>
+                Manage Your Account
+              </div>
+              <div class="card-body">
+                <!-- Change Password Form -->
+                <div class="change-password-form">
+                  <h5>Change Password</h5>
+                  <form id="changePasswordForm">
+                    <!-- Hidden UserID Field (optional if using session) -->
+                    <input type="hidden" id="UserID" name="UserID" value="" />
+                    
+                    <div class="form-group mb-3">
+                      <label for="currentPassword">Current Password</label>
+                      <div class="input-group">
+                        <input type="password" id="currentPassword" name="currentPassword" class="form-control" required />
+                        <span class="input-group-text" id="toggleCurrentPassword" style="cursor:pointer;">
+                          <i class="fas fa-eye"></i>
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                      <label for="newPassword">New Password</label>
+                      <div class="input-group">
+                        <input type="password" id="newPassword" name="newPassword" class="form-control" required />
+                        <span class="input-group-text" id="toggleNewPassword" style="cursor:pointer;">
+                          <i class="fas fa-eye"></i>
+                        </span>
+                      </div>
+                      <div id="passwordError" class="error"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Update Password</button>
+                  </form>
+                  <!-- Display success/error message -->
+                  <div id="responseMessage" class="mt-3"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+              <div class="text-muted">Copyright &copy; Your Website 2023</div>
+              <div>
+                <a href="#">Privacy Policy</a>
+                &middot;
+                <a href="#">Terms &amp; Conditions</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Bootstrap & Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+	<script>
+  fetch('php/getName.php')
+    .then(response => response.text())
+    .then(name => {
+      document.getElementById('username').textContent = name;
+    })
+    .catch(error => console.error('Error fetching name:', error));
+</script>
+    <script>
+      // Dashboard data fetching (unchanged)
+      function fetchDashboardData() {
+        fetch('php/getTotalEmployees.php')
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById('total-employees').textContent = data.total;
+          })
+          .catch((error) => console.error('Error fetching total employees:', error));
+
+        fetch('php/getTodayAttendanceStatus.php')
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById('late-today').textContent = data.late;
+            document.getElementById('on-time-today').textContent = data.onTime;
+            document.getElementById('absent-today').textContent = data.absent;
+          })
+          .catch((error) => console.error('Error fetching attendance status:', error));
+      }
+      document.addEventListener('DOMContentLoaded', fetchDashboardData);
+
+      // Password change form logic
+      const changePasswordForm = document.getElementById('changePasswordForm');
+      const passwordError = document.getElementById('passwordError');
+      const responseMessage = document.getElementById('responseMessage');
+
+      // Validate new password for uppercase, lowercase, digit, length >= 8
+      function validateNewPassword(pw) {
+        const hasUppercase = /[A-Z]/.test(pw);
+        const hasLowercase = /[a-z]/.test(pw);
+        const hasDigit = /\d/.test(pw);
+        const minLength = pw.length >= 8;
+
+        if (!hasUppercase) {
+          return 'Password must contain at least one uppercase letter.';
+        }
+        if (!hasLowercase) {
+          return 'Password must contain at least one lowercase letter.';
+        }
+        if (!hasDigit) {
+          return 'Password must contain at least one digit.';
+        }
+        if (!minLength) {
+          return 'Password must be at least 8 characters long.';
+        }
+        return '';
+      }
+
+      changePasswordForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Clear any previous messages
+        passwordError.textContent = '';
+        responseMessage.textContent = '';
+
+        // Gather form data
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+
+        // Validate new password
+        const validationError = validateNewPassword(newPassword);
+        if (validationError) {
+          passwordError.textContent = validationError;
+          return; // Stop if invalid
+        }
+
+        // Construct request payload
+        const formData = new FormData();
+        formData.append('currentPassword', currentPassword);
+        formData.append('newPassword', newPassword);
+        formData.append('UserID', document.getElementById('UserID').value);
+
+        // Example fetch call to your server-side script
+        fetch('php/updateEmployeePassword.php', {
+          method: 'POST',
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              responseMessage.className = 'success';
+              responseMessage.textContent = data.message;
+              changePasswordForm.reset();
+            } else {
+              responseMessage.className = 'error';
+              responseMessage.textContent = data.message || 'Update failed.';
+            }
+          })
+          .catch((error) => {
+            console.error('Error updating password:', error);
+            responseMessage.className = 'error';
+            responseMessage.textContent = 'An error occurred while updating your password.';
+          });
+      });
+
+      // Toggle password visibility for Current Password field
+      const toggleCurrentPassword = document.getElementById('toggleCurrentPassword');
+      const currentPasswordInput = document.getElementById('currentPassword');
+      toggleCurrentPassword.addEventListener('click', function () {
+        if (currentPasswordInput.type === 'password') {
+          currentPasswordInput.type = 'text';
+          toggleCurrentPassword.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        } else {
+          currentPasswordInput.type = 'password';
+          toggleCurrentPassword.innerHTML = '<i class="fas fa-eye"></i>';
+        }
+      });
+
+      // Toggle password visibility for New Password field
+      const toggleNewPassword = document.getElementById('toggleNewPassword');
+      const newPasswordInput = document.getElementById('newPassword');
+      toggleNewPassword.addEventListener('click', function () {
+        if (newPasswordInput.type === 'password') {
+          newPasswordInput.type = 'text';
+          toggleNewPassword.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        } else {
+          newPasswordInput.type = 'password';
+          toggleNewPassword.innerHTML = '<i class="fas fa-eye"></i>';
+        }
+      });
+
+      // Optionally, set the UserID from sessionStorage if available
+      document.addEventListener('DOMContentLoaded', () => {
+        const userID = sessionStorage.getItem('UserID');
+        if (userID) {
+          document.getElementById('UserID').value = userID;
+        }
+      });
+    </script>
+  </body>
+</html>
