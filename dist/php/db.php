@@ -1,17 +1,17 @@
 <?php
-// for local db
+/* for local db
 $host = 'localhost';
 $db = 'freedb_smartpayrollsystem';  // Your database name
 $user = 'root';
 $pass = ''; // Your password
+*/
 
-
-/* for online db
+// for online db
 $host = 'sql.freedb.tech';
 $db = 'freedb_smartpayrollsystem';  // Your database name
-$user = 'freedb_smartpayrollsystem';
-$pass = 'j7Y#Xdb#UEfPXEB'; // Your password
-*/
+$user = 'freedb_payrollsystem';
+$pass = 'EK*3rfMDyEfUd2X'; // Your password
+
 // Create connection
 $conn = new mysqli($host, $user, $pass, $db);
 
