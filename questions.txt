@@ -1,0 +1,118 @@
+1. Network Configuration
+
+- Topology & Configuration
+
+The system follows a client-server model: end users connect to the web server (hosting the PHP/HTML/JS code) over HTTPS, and the server communicates with a MySQL database on the same or a nearby host.
+
+- Security Measures
+
+The hosting provider or control panel environment typically provides a firewall. You enforce HTTPS to encrypt traffic (e.g., using an SSL certificate).
+
+Database access is restricted to the local server or specific IP addresses.
+
+- Protocols & Communication
+
+Front-end calls are over HTTPS to your PHP endpoints.
+
+PHP uses MySQLi or PDO to talk to the MySQL database.
+
+2.  Deployment & Infrastructure
+
+- Deployment Strategies
+
+deployed to a shared hosting or a control-panel-based environment 
+
+You can push code via FTP, SFTP, or a Git deployment mechanism.
+
+- Hardware Specs & Server Config
+
+Typically runs on a LAMP stack (Linux, Apache, MySQL, PHP).
+
+- Configuration Management
+
+Basic environment variables or a config file (e.g., db.php) store database credentials and site settings.
+
+- Scalability & Resource Optimization
+
+Basic caching (e.g., PHP opcache) or query optimization in MySQL.
+
+If usage grows, you could move to a VPS or cloud-based environment, separate database from web server, and implement caching or horizontal scaling.
+
+3. Security Measures
+
+- Security Protocols & Measures
+
+SSL/TLS for all web traffic (HTTPS).
+
+Strict firewall rules to prevent direct external DB connections.
+
+Use prepared statements in PHP to prevent SQL injection.
+
+- Authentication & Authorization
+
+User login uses password_hash() and password_verify().
+
+Session-based authentication (PHP sessions) or tokens for API calls.
+
+Role-based logic: “Admin” vs. “Employee” privileges.
+
+- Encryption & Data Protection
+
+Passwords are stored as salted hashes (no plain-text).
+
+Sensitive data in transit is protected by HTTPS.
+
+Access to the hosting control panel is limited to admin credentials.
+
+- Incident Response & Mitigation
+
+If a breach is detected, you can reset credentials, rotate DB passwords, and restore from backups.
+
+Logs can help identify suspicious activity.
+
+4. System Monitoring & Maintenance
+
+- Tools & Techniques
+
+Basic error logs in Apache/PHP.
+
+Some hosting panels offer resource usage graphs (CPU, RAM).
+
+You might add an external uptime monitor (e.g., UptimeRobot).
+
+- Logging & Error Handling
+
+Application-level logs: track authentication attempts, payroll generation, errors.
+
+Possibly log to a separate file or DB table if needed.
+
+- Handling Updates
+
+Typically done via cPanel or FTP to push new PHP files.
+
+Database schema updates might use phpMyAdmin or migration scripts.
+
+- Disaster Recovery & Backup
+
+The hosting environment usually has daily or weekly backups.
+
+MySQL backups can be taken via phpMyAdmin or scheduled tasks.
+
+You can also do manual exports or store backups offsite.
+
+5. API & Integration Points
+
+- Documentation of APIs
+
+If external systems integrate (e.g., for HR or accounting), you’d define endpoints (like getEmployeeInfo.php, getPayslips.php) returning JSON.
+
+- Endpoints, Methods, Data Formats
+
+Typically POST or GET to PHP scripts, returning JSON.
+
+Standard REST-like patterns: php/getEmployeeInfo.php?id=123.
+
+- Integration with External Systems
+
+For advanced features (e.g., external payroll providers), the system might offer a secure token-based API or a direct database read under strict access.
+
