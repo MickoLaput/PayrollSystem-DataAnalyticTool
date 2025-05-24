@@ -135,8 +135,69 @@
                   </tr>
                 </tbody>
               </table>
+                      <button id="leave-conversion" class="btn btn-primary mt-3">
+                        Leave Conversion
+                      </button>
+					  
+				<!-- Leave Conversion Modal -->
+				<div class="modal fade" id="conversionModal" tabindex="-1" aria-labelledby="conversionModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+					<form id="conversionForm" class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title" id="conversionModalLabel">Request Leave Conversion</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					  </div>
+					  <div class="modal-body">
+						<div class="mb-3">
+						  <label for="convLeaveType" class="form-label">Leave Type</label>
+						  <select id="convLeaveType" name="leaveType" class="form-select" required>
+							<option value="">Loading...</option>
+						  </select>
+						</div>
+						<div class="mb-3">
+						  <label for="convDays" class="form-label">Days to Convert</label>
+						  <input
+							type="number"
+							id="convDays"
+							name="daysRequested"
+							class="form-control"
+							min="1"
+							step="1"
+							required
+						  />
+						  <div class="form-text" id="convMaxInfo"></div>
+						</div>
+						<div class="mb-3">
+						  <label for="convReason" class="form-label">Reason</label>
+						  <textarea id="convReason" name="reason" class="form-control" rows="3" required></textarea>
+						</div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Submit Request</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					  </div>
+					</form>
+				  </div>
+				</div>
+			
             </section>
-
+            <!-- Message Modal -->
+            <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" id="messageModalBody">
+                    <!-- message text gets injected here -->
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- Section for Leave Filed -->
             <section>
               <h2>Leave Filed</h2>
@@ -157,6 +218,28 @@
                 </tbody>
               </table>
             </section>
+            
+            <!-- Section for Leave Conversion Requests -->
+			<section>
+			  <h2>Leave Conversion Requests</h2>
+			  <table id="leave-conversion-table">
+				<thead>
+				  <tr>
+					<th>Request Date</th>
+					<th>Leave Type</th>
+					<th>Days Requested</th>
+					<th>Reason</th>
+					<th>Status</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					<td colspan="5">Loading leave conversion requests...</td>
+				  </tr>
+				</tbody>
+			  </table>
+			</section>
+            
           </div>
         </main>
         <footer class="py-4 bg-light mt-auto">
@@ -243,12 +326,121 @@
             console.error('Error fetching leave filed data:', error);
           });
       }
+      // 3) Display conversion requests
+        function displayLeaveConversions(data) {
+          const tbody = document.getElementById('leave-conversion-table').querySelector('tbody');
+          tbody.innerHTML = '';
+          if (data.error) {
+            tbody.innerHTML = `<tr><td colspan="5">${data.error}</td></tr>`;
+          } else {
+            data.forEach(item => {
+              const row = document.createElement('tr');
+              row.innerHTML =
+                `<td>${item.RequestDate}</td>` +
+                `<td>${item.LeaveType}</td>` +
+                `<td>${item.DaysRequested}</td>` +
+                `<td>${item.Reason}</td>` +
+                `<td>${item.Status}</td>`;
+              tbody.appendChild(row);
+            });
+          }
+        }
+        
+        // 4) Fetch conversion requests from PHP endpoint
+        function fetchLeaveConversionsData() {
+          fetch('php/getLeaveConversions.php')
+            .then(res => res.json())
+            .then(data => displayLeaveConversions(data))
+            .catch(err => console.error('Error fetching conversion requests:', err));
+        }
 
       // Load data when the page loads
       document.addEventListener('DOMContentLoaded', function() {
         fetchLeaveBalancesData();
         fetchLeaveFiledData();
+        fetchLeaveConversionsData();
       });
     </script>
+	 
+	 <script>
+    <!-- Modal logic: wire up button, populate form, submit -->
+    document.addEventListener('DOMContentLoaded', function() {
+      const conversionModalEl = document.getElementById('conversionModal');
+      const conversionModal = new bootstrap.Modal(conversionModalEl);
+
+      document.getElementById('leave-conversion').addEventListener('click', () => {
+        const typeSelect = document.getElementById('convLeaveType');
+        const daysInput  = document.getElementById('convDays');
+        const infoText   = document.getElementById('convMaxInfo');
+
+        // reset & load
+        document.getElementById('conversionForm').reset();
+        typeSelect.innerHTML = `<option>Loading...</option>`;
+        daysInput.removeAttribute('max');
+        infoText.textContent = '';
+
+        fetch('php/getLeaveBalances.php')
+          .then(res => res.json())
+          .then(balances => {
+            typeSelect.innerHTML = `<option value="">Select type…</option>`;
+            balances.forEach(b => {
+              const opt = document.createElement('option');
+              opt.value = b.LeaveType;
+              opt.textContent = `${b.LeaveType} (${b.DaysAvailable} days available)`;
+              opt.dataset.max = b.DaysAvailable;
+              typeSelect.appendChild(opt);
+            });
+          })
+          .catch(err => {
+            typeSelect.innerHTML = `<option value="">Error loading balances</option>`;
+            console.error(err);
+          });
+
+        conversionModal.show();
+      });
+
+      document.getElementById('convLeaveType').addEventListener('change', function() {
+        const max = this.selectedOptions[0]?.dataset?.max || 0;
+        const daysInput = document.getElementById('convDays');
+        daysInput.max = max;
+        daysInput.value = '';
+        document.getElementById('convMaxInfo').textContent =
+          max ? `You may convert up to ${max} day${max>1?'s':''}.` : '';
+      });
+
+      document.getElementById('conversionForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const data = new FormData(this);
+
+        fetch('php/submitLeaveConversion.php', {
+          method: 'POST',
+          body: data
+        })
+          .then(r => r.json())
+          .then(resp => {
+            const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+
+            if (resp.success) {
+              conversionModal.hide();
+              fetchLeaveConversionsData();
+              document.getElementById('messageModalBody').textContent =
+                'Your leave conversion request was submitted.';
+              messageModal.show();
+            } else {
+              document.getElementById('messageModalBody').textContent =
+                'Error: ' + (resp.message || 'Could not submit.');
+              messageModal.show();
+            }
+          })
+          .catch(err => {
+          console.error(err);
+          document.getElementById('messageModalBody').textContent =
+            'Network error, please try again.';
+          messageModal.show();
+        });
+      });
+    });
+    </script>
+	
   </body>
 </html>
