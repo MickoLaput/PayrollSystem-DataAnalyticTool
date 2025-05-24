@@ -194,6 +194,19 @@
                   <a class="nav-link" href="AdminPdfDistribution.html"
                     >PDF Distribution</a
                   >
+				  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+					   data-bs-target="#collapseDeductions" aria-expanded="false" aria-controls="collapseDeductions">
+					  <div class="sb-nav-link-icon"><i class="fas fa-money-check-alt"></i></div>
+					  Deductions
+					  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+					</a>
+					<div class="collapse" id="collapseDeductions">
+					  <nav class="sb-sidenav-menu-nested nav">
+						<a class="nav-link" href="AdminSSS.html">SSS</a>
+						<a class="nav-link" href="AdminPhilHealth.html">PhilHealth</a>
+						<a class="nav-link" href="AdminPagIbig.html">Pag-Ibig</a>
+					  </nav>
+					</div>
                 </nav>
               </div>
               <!-- Time Section -->
@@ -229,26 +242,7 @@
                     >View Leave Balances</a
                   >
                 </nav>
-              </div>
-			  
-			  <div class="sb-sidenav-menu-heading">Deductions</div>
-        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDeductions" aria-expanded="false" aria-controls="collapseDeductions">
-          <div class="sb-nav-link-icon">
-            <i class="fas fa-money-check-alt"></i>
-          </div>
-          Deductions
-          <div class="sb-sidenav-collapse-arrow">
-            <i class="fas fa-angle-down"></i>
-          </div>
-        </a>
-        <div class="collapse" id="collapseDeductions" aria-labelledby="headingDeductions" data-bs-parent="#sidenavAccordion">
-          <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="AdminSSS.html">SSS</a>
-            <a class="nav-link" href="AdminPhilHealth.html">PhilHealth</a>
-            <a class="nav-link" href="AdminPagIbig.html">Pag-Ibig</a>
-          </nav>
-        </div>
-
+              </div>		  
 			  
               <!-- Addons Section -->
               <div class="sb-sidenav-menu-heading">Addons</div>
@@ -331,6 +325,30 @@
               </div>
             </div>
           </div>
+           
+           <h2>Pending Leave Conversion Requests</h2>
+          <div class="card mb-4">
+            <div class="card-body">
+              <table id="leaveConversionRequestsTable" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>Request Date</th>
+                    <th>Leave Type</th>
+                    <th>Days Requested</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="leaveConversionRequestsBody">
+                  <tr><td colspan="8">Loading conversion requests…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
         </main>
         <footer class="py-4 bg-light mt-auto">
           <div class="container-fluid px-4">
@@ -346,6 +364,8 @@
         </footer>
       </div>
     </div>
+    
+   
 
     <!-- Bootstrap & Core Scripts -->
     <script
@@ -501,5 +521,75 @@
         fetchLeaveRequests();
       });
     </script>
+    
+    <script>
+  // -- 1) Render the rows
+  function displayLeaveConversionRequests(data) {
+    const tbody = document.getElementById('leaveConversionRequestsBody');
+    tbody.innerHTML = '';
+    if (data.error) {
+      tbody.innerHTML = `<tr><td colspan="8" class="error">${data.error}</td></tr>`;
+      return;
+    }
+    data.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${r.EmployeeID}</td>
+        <td>${r.Name}</td>
+        <td>${r.RequestDate}</td>
+        <td>${r.LeaveType}</td>
+        <td>${r.DaysRequested}</td>
+        <td>${r.Reason}</td>
+        <td>${r.Status}</td>
+        <td>
+          <button class="action-btn approve-btn"
+                  onclick="updateLeaveConversionStatus(${r.ConversionID}, 'APPROVED')">
+            Approve
+          </button>
+          <button class="action-btn reject-btn"
+                  onclick="updateLeaveConversionStatus(${r.ConversionID}, 'DECLINED')">
+            Reject
+          </button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // -- 2) Fetch PENDING conversions
+  function fetchLeaveConversionRequests() {
+    fetch('php/getLeaveConversionsAdmin.php')
+      .then(r => r.json())
+      .then(displayLeaveConversionRequests)
+      .catch(err => {
+        console.error(err);
+        document.getElementById('leaveConversionRequestsBody').innerHTML =
+          `<tr><td colspan="8" class="error">Error loading data</td></tr>`;
+      });
+  }
+
+  // -- 3) Approve / Decline handler
+  function updateLeaveConversionStatus(convId, newStatus) {
+    fetch('php/updateLeaveConversionStatus.php', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ ConversionID: convId, Status: newStatus })
+    })
+    .then(r => r.json())
+    .then(resp => {
+      if (!resp.success) throw new Error(resp.message||'Update failed');
+      // refresh both tables
+      fetchLeaveConversionRequests();
+      fetchLeaveRequests();
+    })
+    .catch(err => alert('Error: '+ err.message));
+  }
+
+  // -- 4) On page load, also pull conversions
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchLeaveBalances();
+    fetchLeaveRequests();
+    fetchLeaveConversionRequests();
+  });
+</script>
   </body>
 </html>
