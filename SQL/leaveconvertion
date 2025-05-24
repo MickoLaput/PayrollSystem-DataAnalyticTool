@@ -1,0 +1,15 @@
+CREATE TABLE `leaveconversion` (
+  `ConversionID` INT AUTO_INCREMENT PRIMARY KEY,
+  `EmployeeID`   INT         NOT NULL,
+  `RequestDate`  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `LeaveType`    VARCHAR(50) NOT NULL,              -- e.g. 'Vacation Leave'
+  `DaysRequested` INT        NOT NULL,
+  `Reason`       TEXT        NULL,
+  `Status`       ENUM('PENDING','APPROVED','DECLINED')
+                               NOT NULL DEFAULT 'PENDING',
+  `AdminID`      INT         NULL,                   -- will be set when approved/declined
+  `DecisionDate` DATETIME    NULL,
+  `AdminComment` TEXT        NULL,
+  FOREIGN KEY (`EmployeeID`) REFERENCES `employee`(`EmployeeID`),
+  FOREIGN KEY (`AdminID`)    REFERENCES `user`(`UserID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
